@@ -1,0 +1,28 @@
+
+div {
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+
+
+.div1 {
+    background-color: lightcoral;
+    border: 10px solid black;
+    padding: 20px;
+}
+
+
+.div2 {
+    background-color: lightblue;
+    border: 20px solid black;
+    left: 260px;
+}
+
+
+.div3 {
+    background-color: lightgreen;
+    border: 10px solid black;
+    left: 500px;
+}
+
