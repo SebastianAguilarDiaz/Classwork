@@ -2,27 +2,36 @@
 div {
     width: 200px;
     height: 200px;
-    position: relative;
+    
+}
+h1{
+    position:sticky
+}
+span{
+    background-color: yellow
 }
 
-
 .div1 {
-    background-color: lightcoral;
+    background-color: lightblue;
     border: 10px solid black;
     padding: 20px;
+    position: relative
+    
 }
 
 
 .div2 {
-    background-color: lightblue;
+    background-color: red;
     border: 20px solid black;
-    left: 260px;
+    margin-left: 260px;
+    /* position: relative */
 }
 
 
 .div3 {
-    background-color: lightgreen;
+    background-color: yellow;
     border: 10px solid black;
-    left: 500px;
+    margin-left: 500px;
+    /* position: relative */
 }
 
