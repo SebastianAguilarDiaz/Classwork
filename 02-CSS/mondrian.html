@@ -5,8 +5,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mondrian</title>
+    <style>
+        #top-left {
+            height: 150px;
+            width: 100px;
+            border: black solid;
+            border-width: 0px 10px 10px 0px;
+        }
+        #middle-left {
+            height: 150px;
+            width: 100px;
+            border: black solid;
+            border-width: 10px 10px 10px 0px;
+        }
+        #bottom-left {
+            height: 150px;
+            width: 100px;
+            background-color: blue;
+            border: black solid;
+            border-width: 0px 10px 0px 0px;
+        }
+        #top-right {
+            height: 320px;
+            width: 300px;
+            background-color: red;
+            position: absolute;
+            margin-left: 109px;
+            border: black solid;
+            border-width: 0px 10px 10px 0px;    
+        }
+        #bottom {
+            height: 150px;
+            width: 240px;
+            background: yellow;
+            position: absolute;
+            margin-left: 109px;
+            margin-top: 329px;
+            border: black solid;
+            border-width: 0px 10px 0px 0px;
+        }
+        #separator {
+            position: absolute;
+            background-color: black;
+            height: 10px;
+            width: 70px;
+            margin-top: 400px;
+            margin-left: 350px;
+        }
+    </style>
 </head>
 <body>
     <h1>Mondrian</h1>
+    <div id="top-right"></div>
+    <div id="bottom"></div>
+    <div id="separator"></div>
+    <div id="top-left"></div>
+    <div id="middle-left"></div>
+    <div id="bottom-left"></div>
 </body>
 </html>
