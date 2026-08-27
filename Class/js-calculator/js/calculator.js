@@ -12,17 +12,29 @@ const resultStatus = document.getElementById('result-status');
 // ==========================================
 
 // TODO: Write "add" callback expression (a, b) => ...
-
+const add= (a,b)=> { return a+b;}
 
 // TODO: Write "subtract" callback expression (a, b) => ...
-
+const subtract=(a,b)=> {return a-b;}
 
 // TODO: Write "multiply" callback expression (a, b) => ...
-
+const multiply=(a,b)=> {return a*b;}
 
 // TODO: Write "divide" callback expression (a, b) => ...
 // Rule: Guard against division-by-zero! Return an Error or string warning.
+const divide=(a,b)=>{
+    // try{
+    //     return a/b;
+    // }
+    // catch(error){
+    //     return -1;
+    // }
 
+    if(b==0)
+        throw new Error("Can not divide by zero");
+    return a/b;
+
+}
 
 // ==========================================
 // 3. TODO: HIGHER-ORDER FUNCTION ENGINE (Students write this)
@@ -34,20 +46,51 @@ const resultStatus = document.getElementById('result-status');
 //   - Is numA and numB actually valid numbers?
 //   - Is callback actually a function?
 // Execution: Returns callback(numA, numB)
+const calculator = (numA,numB,callback)=>{
+    
+    return callback(numA,numB);
 
+}
 
 // ==========================================
 // 4. TODO: EVENT OBSERVER & INTEGRATION WIRING (Students write this)
 // ==========================================
 calculateBtn.addEventListener('click', () => {
     alert('click');
-    // TODO: Extract values from the inputs and parse them as floats.
+    try{
+        // TODO: Extract values from the inputs and parse them as floats.
+        const numA = parseFloat(num1Input.value);
+        const numB = parseFloat(num2Input.value);
+        
+        
+        // TODO: Retrieve the selected operation string value.
+        const operation = operationSelect.value;
+        if(num1Input.value==="" || num2Input.value===""){
+            throw new Error("Introduce a number");
+        }
+        if(!operation){
+            throw new Error("Select an operation");
+        }
 
-    // TODO: Retrieve the selected operation string value.
+        // TODO: Match the selected operation string to its corresponding function reference.
+        let targetCallback;
+        switch (operation){
+            case "add":         targetCallback=add;         break;
+            case "subtract":    targetCallback=subtract;   break;
+            case "multiply":    targetCallback=multiply;    break;
+            case "divide":      targetCallback=divide;      break;
+            default:            throw new Error ("Operation not defined");
+        }
+        // TODO: Execute the higher-order 'calculator' function with input values and the matched function reference.
+        const res = calculator(numA , numB, targetCallback);
+        // TODO: Update resultStatus text, toggling classes (e.g., alert-success vs alert-danger) based on outcomes!
+        resultStatus.className="alert alert-success text-center";
+        resultStatus.textContent=`Result: ${res}`;
+    }catch(error){
+        resultStatus.className="alert alert-danger text-center";
+        resultStatus.textContent=`Result: ${error.message}`;
+    }
 
-    // TODO: Match the selected operation string to its corresponding function reference.
 
-    // TODO: Execute the higher-order 'calculator' function with input values and the matched function reference.
 
-    // TODO: Update resultStatus text, toggling classes (e.g., alert-success vs alert-danger) based on outcomes!
 });
