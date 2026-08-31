@@ -6,7 +6,7 @@ div {
 
 
 .div1 {
-    background-color: blue;
+    background-color: red;
     /* border: 10px solid black; */
     /* margin-left:     */
     
@@ -14,7 +14,7 @@ div {
 
 
 .div2 {
-    background-color: yellow;
+    background-color: blue;
     /* border: 20px solid black; */
     margin-left: 80px;
     
@@ -22,7 +22,7 @@ div {
 
 
 .div3 {
-    background-color: red;
+    background-color: yellow;
     /* border: 10px solid black; */
     margin-left: 160px;
     

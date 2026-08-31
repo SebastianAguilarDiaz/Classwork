@@ -1,3 +1,37 @@
-body {
-    margin: 0;
+
+div {
+    width: 200px;
+    height: 200px;
+    
 }
+h1{
+    position:sticky
+}
+span{
+    background-color: yellow
+}
+
+.div1 {
+    background-color: yellow;
+    border: 10px solid black;
+    padding: 20px;
+    
+    
+}
+
+
+.div2 {
+    background-color: blue;
+    border: 20px solid black;
+    margin-left: 260px;
+    
+}
+
+
+.div3 {
+    background-color: red;
+    border: 10px solid black;
+    margin-left: 500px;
+    
+}
+

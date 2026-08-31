@@ -12,19 +12,19 @@ span{
 }
 
 .div1 {
-    background-color: lightblue;
+    background-color: red;
     border: 10px solid black;
     padding: 20px;
-    position: relative
+    
     
 }
 
 
 .div2 {
-    background-color: red;
+    background-color: blue;
     border: 20px solid black;
     margin-left: 260px;
-    /* position: relative */
+    
 }
 
 
@@ -32,6 +32,6 @@ span{
     background-color: yellow;
     border: 10px solid black;
     margin-left: 500px;
-    /* position: relative */
+    
 }
 
