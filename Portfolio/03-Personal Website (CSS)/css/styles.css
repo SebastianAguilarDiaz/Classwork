@@ -1,3 +1,9 @@
 body {
   margin: 0;
+  background-color: lightblue;
+}
+
+body * {
+  text-align: center;
+  font-family: 'Merriweather', serif;
 }
