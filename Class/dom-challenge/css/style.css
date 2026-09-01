@@ -16,6 +16,6 @@ body {
     color: #6c757d;
 }
 /* Active priority indicators */
-.priority-high { border-left: 5px solid #dc3545; }
-.priority-medium { border-left: 5px solid #ffc107; }
-.priority-low { border-left: 5px solid #198754; }
+.priority-high { border-left: 5px solid #dc3545 !important;  }
+.priority-medium { border-left: 5px solid #ffc107 !important; }
+.priority-low { border-left: 5px solid #198754 !important; }
