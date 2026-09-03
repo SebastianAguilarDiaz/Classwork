@@ -24,9 +24,19 @@ const createActionCard = (text, priority) => {
   );
   // 2c. Add appropriate priority class ('priority-high', 'priority-medium', 'priority-low')
   let priorityClass;
-  if (priority === "low") priorityClass = "priority-low";
-  if (priority === "medium") priorityClass = "priority-medium";
-  if (priority === "high") priorityClass = "priority-high";
+  let badgeColor = "bg-secondary";
+  if (priority === "low") {
+    priorityClass = "priority-low";
+    badgeColor = "bg-success";
+  }
+  if (priority === "medium") {
+    priorityClass = "priority-medium";
+    badgeColor = "bg-warning text-dark";
+  }
+  if (priority === "high") {
+    priorityClass = "priority-high";
+    badgeColor = "bg-danger";
+  }
 
   li.classList.add(priorityClass);
   // 2d. Construct interior HTML with text nodes, priority badges, action button icons
@@ -38,7 +48,7 @@ const createActionCard = (text, priority) => {
   li.innerHTML = `
         <div class="d-flex align-items-center">
             <span class="card-title fw-semibold">${text}</span>
-            <span class="badge ms-2 bg-secondary text-capitalize">${priority}</span>
+            <span class="badge ms-2 ${badgeColor} text-capitalize ">${priority}</span>
         </div>
         <div class="btn-group btn-group-sm">
             <button class="btn btn-outline-success" data-action="toggle">✓</button>
@@ -56,8 +66,10 @@ const createActionCard = (text, priority) => {
 // ==========================================
 const updateCounter = () => {
   // Calculate total children nodes inside actionList and update cardCounter display.
-
-  cardCounter.textContent = "Total: " + actionList.children.length + " items";
+  let totalOfCards =
+    actionList.children.length -
+    document.querySelectorAll(".impact-card.completed").length;
+  cardCounter.textContent = "Total: " + totalOfCards + " items";
 };
 
 // ==========================================
@@ -96,10 +108,16 @@ actionList.addEventListener("click", (e) => {
   if (action === "toggle") {
     // Toggle complete class on currentCard
     currentCard.classList.toggle("completed");
+    updateCounter(); // Update total count after toggle
   } else if (action === "delete") {
     // Fade out/remove currentCard from DOM, update totals
-    currentCard.remove();
-    updateCounter();
+    currentCard.style.transition = "all 0.3s ease";
+    currentCard.style.opacity = "0";
+    currentCard.style.transform = "scale(0.9)";
+    setTimeout(() => {
+      currentCard.remove();
+      updateCounter();
+    }, 300);
   } else if (action === "up") {
     // Find sibling element directly above currentCard
     const prevCard = currentCard.previousElementSibling;
