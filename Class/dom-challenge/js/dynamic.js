@@ -145,14 +145,36 @@ actionList.addEventListener("click", (e) => {
 // ==========================================
 saveBtn.addEventListener("click", () => {
   // 1. Target all dynamically spawned list item nodes inside the DOM
+  const actionCards = actionList.querySelectorAll("li");
+  const exportData = [];
+
   // 2. Loop through active elements and scrape current UI state into an array
+  actionCards.forEach((card) => {
+    const titleElement = card.querySelector(".card-title");
+    const priorityElement = card.querySelector(".badge");
+    const isCompleted = card.classList.contains("completed");
+    exportData.push({
+      title: titleElement.textContent.trim(),
+      priority: priorityElement.textContent.trim(),
+      completed: isCompleted,
+    });
+  });
+  console.log(exportData);
+
   // 3. Defensive Check: Prevent exporting blank structures
+
   // 4. Serialize the JavaScript Array to formatted JSON text (from our JSON standards)
+
   // 5. Create a static Blob (Binary Large Object) containing our raw string payload
+
   // 6. Generate an ephemeral, localized URL string pointing to our Blob in memory
+
   // 7. Spawn a hidden anchor element to act as a programmatic trigger
+
   // Format filename dynamically with the current ISO calendar date
+
   // 8. Mount, programmatically click, and immediately unmount the anchor link
+
   // 9. Clean up memory pointers by revoking the Object URL slightly after completion
 });
 
