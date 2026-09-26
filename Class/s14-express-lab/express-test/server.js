@@ -14,7 +14,12 @@ const scientists = [
   { id: 3, name: "Dr. Aisha Khan", department: "Climate", projects: 7 },
 ];
 const initiatives = [];
+// ==========================================
+// 2. ROUTES & ENDPOINTS
+// ==========================================
 
+// 2a. HTML Root Landing Route
+// TODO: Create GET '/' endpoint returning a basic HTML status heading string using res.send()
 app.get("/", (req, res) => {
   res.send(`
     <div style="foth family: sans-serif; padding 20px;">
@@ -30,6 +35,10 @@ app.get("/greet", (req, res) => {
   res.send(`hello ${name}, how is the wheather in ${city}`);
 });
 
+// 2b. GET All Scientists with Query Filtering (req.query)
+// TODO: Create GET '/api/scientists' endpoint
+// - If req.query.dept is provided, filter scientists by department
+// - Return JSON response with status 200: res.json(...)
 app.get("/api/scientists", (req, res) => {
   const { dept } = req.query;
   if (dept) {
@@ -40,43 +49,65 @@ app.get("/api/scientists", (req, res) => {
     // return result;
 
     const result = scientists.filter(
-      (scientist) => scientist.department.toLowerCase === dept.toLowerCase,
+      (scientist) => scientist.department.toLowerCase() === dept.toLowerCase(),
     );
-    if (result && result.lenght > 0) {
-      return res.json({
+
+    if (result && result.length > 0) {
+      return res.status(200).json({
         deptScientists: result,
         dept,
         count: result.length,
       });
     } else {
-      return res.json({ errorMsg: `No results for department ${dept}` });
+      return res
+        .status(404)
+        .json({ errorMsg: `No results for department ${dept}` });
     }
   }
-  return res.json({ msg: `NA` });
+  return res.json({ scientists });
 });
 
-app.get("/api/scientists/:id/profile/:keyword", (req, res) => {
+// 2c. GET Single Scientist by ID (req.params)
+// TODO: Create GET '/api/scientists/:id' endpoint
+// - Parse req.params.id as an integer
+// - Find scientist matching ID
+// - Return 404 JSON error if not found, or 200 JSON object if found
+app.get("/api/scientists/:id", (req, res) => {
   const scientistId = parseInt(req.params.id, 10);
+  const { keyword } = req.params;
   const scientist = scientists.find(
     (scientist) => scientist.id === scientistId,
   );
   if (!scientist) {
-    return res.json({
+    return res.status(404).json({
       success: false,
       errorMsg: `No scientist found with id ${scientistId}`,
     });
   }
-  res.json({
+  res.status(200).json({
     success: true,
     data: scientist,
+    keyword,
   });
 });
 
+// 2d. POST Create New Initiative (req.body)
+// TODO: Create POST '/api/initiatives' endpoint
+// - Extract title, budget, and department from req.body
+// - Validate fields (return 400 JSON error if missing)
+// - Create new initiative object, push to array
+// - Return 201 Created JSON response
 app.post("/api/initiatives", (req, res) => {
+  console.log(req.body);
   const { title, budget, department } = req.body;
+
+  // if there's any missing field
+  if (!title || !budget || !department) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
   const initiative = { title, budget, department };
   initiatives.push(initiative);
-  res.json({ title, budget, department });
+  res.status(201).json({ title, budget, department });
 });
 
 app.get("/about", (req, res) => {
