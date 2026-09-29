@@ -1,4 +1,5 @@
 import express from "express";
+import axios from "axios";
 
 const app = express();
 app.use(express.json());
@@ -117,6 +118,18 @@ app.get("/about", (req, res) => {
 app.post("/about", (req, res) => {
   res.send("About Page");
 });
+
+app.get("/weather", async (req, res) => {
+  const apiUrl =
+    "https://api.open-meteo.com/v1/forecast?latitude=20.6597&longitude=-103.349&current_weather=true";
+  const response = await axios(apiUrl);
+  const currentWeather = response.data;
+  console.log(currentWeather);
+  res.send(
+    `In Guadalajara, the current weather temp is ${currentWeather.current_weather.temperature} C`,
+  );
+});
+
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });
