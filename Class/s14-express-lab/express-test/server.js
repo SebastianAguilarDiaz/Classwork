@@ -97,7 +97,12 @@ app.get("/api/scientists/:id", (req, res) => {
 // - Extract title, budget, and department from req.body
 // - Validate fields (return 400 JSON error if missing)
 // - Create new initiative object, push to array
+
 // - Return 201 Created JSON response
+app.get("/api/initiatives", (req, res) => {
+  res.json({ initiatives, status: "ok" });
+});
+
 app.post("/api/initiatives", (req, res) => {
   console.log(req.body);
   const { title, budget, department } = req.body;
