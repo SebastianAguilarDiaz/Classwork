@@ -1,0 +1,13 @@
+{
+  "name": "s17-routing-lab",
+  "version": "1.0.0",
+  "description": "In this closing session on Express backend architecture, you will transition from a single-file monolithic server into a modular, enterprise-grade directory structure. You will split endpoint definitions across isolated router files using `express.Router()` and enforce security protocols via **middleware method chaining**.",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  }
+}
