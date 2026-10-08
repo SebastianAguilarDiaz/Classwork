@@ -2,8 +2,26 @@ import express from "express";
 import axios from "axios";
 import { getWeatherFrom } from "./services/meteo-service.js";
 
+import weatherRoutes from "./routes/weatherRoutes.js";
+
 const app = express();
 app.use(express.json());
+
+const protect = (rq, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || authHeader.startsWith("Bearer")) {
+    return next(
+      new AppError("Unauthorized: Missing or invalid token header", 401),
+    );
+  }
+
+  // const { token } = req.headers;
+  // if (!token || token !== "my-secret-token") {
+  //   return res.status(401).json({ error: "Unauthorized" });
+  // }
+  // next();
+};
 
 const scientists = [
   { id: 1, name: "Dr. Elena Rostova", department: "Climate", projects: 4 },
@@ -17,20 +35,14 @@ const scientists = [
 ];
 const initiatives = [];
 
-const WeatherError = class extends Error{
-  constructor(message, statusCode, rootCauseClass){
+const WeatherError = class extends Error {
+  constructor(message, statusCode, rootCauseClass) {
     super(message);
-    this.name="WeatherError";
-    this.statusCode=statusCode;
-    this.rootCauseClass=rootCauseClass;
-
+    this.name = "WeatherError";
+    this.statusCode = statusCode;
+    this.rootCauseClass = rootCauseClass;
   }
-}
-
-
-
-
-
+};
 
 // ==========================================
 // 2. ROUTES & ENDPOINTS
@@ -133,59 +145,27 @@ app.post("/api/initiatives", (req, res) => {
   res.status(201).json({ title, budget, department });
 });
 
-app.get("/about", (req, res,next) => {
-  next({msg:"This is my WebApp Class project."});
-});
+app.get(
+  "/about",
+  (req, res, next) => {
+    const user_type = "viewer";
+    req._internalMsg = "This is my WebApp Class project";
+
+    next();
+  },
+  (req, res, next) => {
+    res.send(`Second endpoint ${req._internalMsg}`);
+  },
+);
 app.get("/about", (req, res) => {
   res.send("About but insecure");
 });
-app.get("/about", (req, res,next) => {
-  next({msg:"Second endpoint"});
+app.get("/about", (req, res, next) => {
+  res.send(`Second endpoint. ${req._internalMsg}`);
 });
 
 app.post("/about", (req, res) => {
   res.send("About Page");
-});
-
-app.get("/weatherGDL", async (req, res) => {
-  const resString = await getWeatherFrom(20.6597, -103.349, "Guadalajara");
-  res.send(resString);
-});
-app.get("/weatherLSN", async (req, res) => {
-  const repString = await getWeatherFrom(46.52, 6.63, "Luasanne");
-  res.send(repString);
-});
-
-const cities={
-  GDL: {lat: 20.6597, long : -103.349},
-  LSN:{lat: 46.52, long: 6.63},
-};
-
-// app.get("/weather/:city",async(req,res,next)=>{
-//   try{ 
-//     const {city}=req.params;
-//     if(!city) throw new Error("City code is required");
-//     if(!cities[city]) throw new Error("City code is invalid");
-//     const {lat,long,name} = cities[city];
-//     const  respString = await getWeatherFrom(lat, long,city);
-//     res.send(respString);
-//   }catch(error){
-//     console.error(error);
-//     if(error.message==="City code is required"){
-//       res.status(400).send({error:"City code is required"});
-//     }
-//     res.status(500).send({error:"Unknown error"});
-//   }
-// });
-
-app.get("/weather/:city",async(req,res,next)=>{
-
-    const {city}=req.params;
-    if(!city) next( new WeatherError("City code is required",400,"/weather/:city"));
-    if(!cities[city]) next( new WeatherError("City code is invalid",400,"/weather/:city"));
-    const {lat,long,name} = cities[city];
-    const  respString = await getWeatherFrom(lat, long,city);
-    res.send(respString);
 });
 
 // app.all('*',(req, res,next)=>{
@@ -193,20 +173,22 @@ app.get("/weather/:city",async(req,res,next)=>{
 //   next(new Error("Endpoint not found"));
 // });
 
+app.use("/api/weather", protect, weatherRoutes);
 
+app.all("/{*splat}", (req, res, next) => {
+  next(new Error("Endpoint not found"));
+});
 
-app.use((err,req,res,next)=>{
+app.use((err, req, res, next) => {
   console.error(err);
-  if(err instanceof WeatherError){
-  const msg = err.message || err.rootCauseClass || "Unknown error";
-  res.status(err.statusCode || 500).json({error:msg, rootCause: err.rootCauseClass,section: "Weather"});
+  if (err instanceof WeatherError) {
+    const msg = err.message || err.rootCauseClass || "Unknown error";
+    res
+      .status(err.statusCode || 500)
+      .json({ error: msg, rootCause: err.rootCauseClass, section: "Weather" });
   }
-  res.status(500).json({error:err.message || "Unknown error"});
-
-}) ; 
-
-
-
+  res.status(500).json({ error: err.message || "Unknown error" });
+});
 
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
