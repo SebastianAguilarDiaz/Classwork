@@ -20,13 +20,31 @@
                 <input type="submit" value="go next">
             </form>
             <% if (typeof names !== 'undefined' && names.length > 0) { %>
-              <ul>
-              <% names.forEach(function(n,i){ %>
-                <li>Hello <a href="/greet/<%= i %>" ><%= n %></a>!</li>
-              <% }) %>
-              </ul>
-            <% } %>
+                <ul>
+                    <% names.forEach(function(n,i){ %>
+                        <li>Hello <a href="/greet/<%= i %>" ><%= n %></a>!</li>
+                        <% }) %>
+                    </ul>
+                    <% } %>
+                    <form action="/task" method="post">
+                        Register:
+                        <input type="text" name="task" id="task" placeholder="Task">
+                        <input type="submit" value="Save">
+                    </form>
+                    <% if (typeof todo !== 'undefined' && todo.length > 0) { %>
+                        <ul>
+                            <% todo.forEach(function(n,i){ %>
+                                <li>
+                                    <%= n %>
+                                    <a href="/task/delete/<%= i %>">[x]</a>
+                                    <a href="/task/up/<%= i %>">↑</a>
+                                    <a href="/task/down/<%= i %>">↓</a>
 
-</body>
-
-</html>
+                                </li>
+                                <% }) %>
+                            </ul>
+                            <% } %>
+                    
+                </body>
+                
+                </html>
