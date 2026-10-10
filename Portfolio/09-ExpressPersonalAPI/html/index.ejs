@@ -19,6 +19,13 @@
                 <input type="text" name="name" id="name" placeholder="Name">
                 <input type="submit" value="go next">
             </form>
+            <% if (typeof names !== 'undefined' && names.length > 0) { %>
+              <ul>
+              <% names.forEach(function(n,i){ %>
+                <li>Hello <a href="/greet/<%= i %>" ><%= n %></a>!</li>
+              <% }) %>
+              </ul>
+            <% } %>
 
 </body>
 
