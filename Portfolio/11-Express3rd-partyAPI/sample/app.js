@@ -1,21 +1,29 @@
-const express = require("express");
-const https = require("https");
-const bodyParser = require("body-parser");
-const axios = require("axios");
-const FormData = require("form-data");
+import https from "https";
+import bodyParser from "body-parser";
+import axios from "axios";
+import FormData from "form-data";
+import express from "express";
+import fs from "fs";
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // https get
 app.get("/", (req, res) => {
-  var url = "http://placekitten.com/g/300/300";
-  https.get(url, (response) => {
-    console.log(response.statusCode);
-    response.on("data", (data) => {
-      res.write(data);
-      res.send();
-    });
-  });
+  const lat = 20.72111;
+  const lon = -103.38742;
+  const API_key = "9f961da3de40ba595a0b4458888a5761";
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_key}`;
+
+  https
+    .get(url, (response) => {
+      console.log(response.statusCode);
+      response.on("data", (data) => {
+        res.write(data);
+      });
+      response.on("end", () => res.end());
+    })
+    .on("error", () => res.send("error"));
 });
 
 // https post
@@ -72,4 +80,5 @@ app.get("/temp", (req, res) => {
 
 app.listen(3000, () => {
   console.log("Listening to port 3000");
+  console.log("http://localhost:3000/");
 });
