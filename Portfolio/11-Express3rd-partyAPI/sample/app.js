@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 app.post("/", (req, res, next) => {
   city_name = req.body.cityName;
   if (!city_name) return res.send(file);
+  // I desactivated de apikey
   const API_key = "9f961da3de40ba595a0b4458888a5761";
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city_name}&appid=${API_key}`;
   let weatherDescription;
