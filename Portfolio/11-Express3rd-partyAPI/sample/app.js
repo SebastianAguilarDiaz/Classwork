@@ -8,20 +8,52 @@ import fs from "fs";
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.set("view engine", "ejs");
+app.set("views", "./");
+
+var city_name = undefined;
+const file = fs.readFileSync("./index.html", "utf-8");
 // https get
 app.get("/", (req, res) => {
-  const lat = 20.72111;
-  const lon = -103.38742;
+  return res.send(file);
+});
+app.post("/", (req, res, next) => {
+  city_name = req.body.cityName;
+  if (!city_name) return res.send(file);
   const API_key = "9f961da3de40ba595a0b4458888a5761";
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_key}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city_name}&appid=${API_key}`;
+  let weatherDescription;
+  let temp;
 
   https
     .get(url, (response) => {
       console.log(response.statusCode);
+      if (response.statusCode != 200)
+        return next(Error("An error has ocurred"));
+      let body = "";
       response.on("data", (data) => {
-        res.write(data);
+        body = body + data;
       });
-      response.on("end", () => res.end());
+      response.on("end", () => {
+        let jsonResp;
+        try {
+          jsonResp = JSON.parse(body);
+        } catch (err) {
+          return next(Error("Bad response from server "));
+        }
+        weatherDescription = jsonResp.weather[0].description;
+        temp = jsonResp.main.temp;
+        const icon = jsonResp.weather[0].icon;
+        if (!icon) return next(Error("Icon not found"));
+        const iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+        res.render("./response", {
+          city_name,
+          temp,
+          weatherDescription,
+          iconUrl,
+          error: undefined,
+        });
+      });
     })
     .on("error", () => res.send("error"));
 });
@@ -77,7 +109,9 @@ app.get("/temp", (req, res) => {
       res.send("Fail error");
     });
 });
-
+app.use((err, req, res, next) => {
+  return res.status(500).render("./response", { error: err.message });
+});
 app.listen(3000, () => {
   console.log("Listening to port 3000");
   console.log("http://localhost:3000/");
