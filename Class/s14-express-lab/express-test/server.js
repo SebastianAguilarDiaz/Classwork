@@ -3,9 +3,14 @@ import axios from "axios";
 import { getWeatherFrom } from "./services/meteo-service.js";
 
 import weatherRoutes from "./routes/weatherRoutes.js";
+import mongoose from "mongoose";
+
 
 const app = express();
 app.use(express.json());
+
+
+
 
 const protect = (rq, res, next) => {
   const authHeader = req.headers.authorization;
@@ -59,6 +64,8 @@ app.get("/", (req, res) => {
     </div>
           `);
 });
+
+
 
 app.get("/greet", (req, res) => {
   const { name, city } = req.query;
