@@ -45,18 +45,17 @@ app.post("/user", (req, res, next) => {
     .catch((err) => next(err));
 });
 
+// Centralized Global Error Handler
+app.use(errorMiddleware);
+
+app.post("/user", (req, res) => {});
+
 // 404 Unhandled Route Handler
 app.all("/{*splat}", (req, res, next) => {
   next(
     new AppError(`Cannot find route ${req.originalUrl} on this server!`, 404),
   );
 });
-
-// Centralized Global Error Handler
-app.use(errorMiddleware);
-
-app.post("/user", (req, res) => {});
-
 app.listen(PORT, () => {
   console.log(`🚀 SustainHub Server running at http://localhost:${PORT}`);
 });
